@@ -1,0 +1,15 @@
+logs/*
+!.gitkeep
+node_modules/
+tmp
+.DS_Store
+.idea
+.apk
+__pycache__
+www/components/
+www/resource/levels/
+plugins/
+platforms/
+
+level_generator/levels/
+

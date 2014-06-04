@@ -1,0 +1,8 @@
+{
+    "lib": {
+        "www": {
+            "id": "com.cg.anyhash",
+            "version": "0.1",
+        }
+    }
+}

@@ -1,0 +1,17 @@
+{
+  "name": "AnyHash",
+  "description": "A secure password solution for the modern, yet insecure (sic!) world.",
+  "version": "0.0.0",
+  "private": true,
+  "dependencies": {
+    "angular": "1.2.x",
+    "angular-route": "1.2.x",
+    "angular-loader": "1.2.x",
+    "angular-mocks": "~1.2.15",
+    "jquery-mobile-bower": "latest",
+    "underscore": "latest",
+    "angular-local-storage": "latest",
+    "fastclick": "1.0.2"
+    
+  }
+}
