@@ -5,51 +5,169 @@
   <meta name="viewport"  content="width=device-width, height=device-height, initial-scale=1, user-scalable=1" />
   <title>VMaze</title>
   
-  <link rel="shortcut icon" href="res/icon/icon.png"> 
+  <!--<link rel="shortcut icon" href="res/icon/icon.png"> -->
   <link rel="stylesheet" href="components/jquery-mobile-bower/css/jquery.mobile-1.4.2.css"/>
   <link rel="stylesheet" href="css/app.css"/>
   
-  <script src="resource/levels/levelsets.js"></script>
-  <script src="components/angular/angular.js"></script>
   <script src="components/jquery/jquery.js"></script>
   <script src="components/jquery-mobile-bower/js/jquery.mobile-1.4.2.js"></script>
+  <script src="components/angular/angular.js"></script>
+  
   <script src="components/angular-local-storage/angular-local-storage.js"></script>
   <script src="components/underscore/underscore.js"></script>
   <script src="components/fastclick/lib/fastclick.js"></script>
+  <script src="components/jsuri/Uri.js"></script>
+  
+  <script src="js-scrypt/browser/scrypt.js"></script>
   
   <script src="js/app.js"></script>
   <script src="js/services.js"></script>
   <script src="js/controllers.js"></script>
   <script src="js/filters.js"></script>
   <script src="js/directives.js"></script>
-  <!--<script>
-		$(function() {
-			if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)   )   
-			{
-				$(".desktop").hide();
-			}
-		});
-  </script>-->
+  <script>
+		/*$(function(){
+			$('#result').click(function(){
+				$(this).select();
+			});
+		});*/
+  </script>
 </head>
 <body ng-controller="AnyHashCtrl">
 
 <!--Weclome Page-->
 <div id="welcome_page" data-role="page">
 	<div data-role="header">
-		<h1>{{appName}}</h1>
+		<h1>AnyHash</h1>
+		<a href="#why_page" data-icon="info" data-transition="slide" data-iconpos="notext" title="Info">Info</a>
+		<a class="desktop" href="../platforms/android/ant-build/AnyHash-debug.apk" 
+			target="_blank" data-role="button"  data-iconpos="notext" data-icon="arrow-d" class="ui-btn-right" 
+			title="Download Android App">Download Android App</a>
 	</div>
 	<div data-role="content">
+		<div data-role="fieldcontain">
+			<label for="password">Master password</label>
+			<input ng-model="masterPassword" type="password" name="password" id="password"/>
+		</div>
+		<div data-role="fieldcontain">
+			<label for="token">Site</label>
+			<!--<input ng-model="token" type="text" name="token" id="token"/>-->
+			<table id="token1" style="width: 78%;border-spacing: 0;">
+				<tbody>
+				<tr>
+					<td>
+						<input ng-model="site" type="text" name="token" id="token"/>
+					</td>
+					<td style='width:3em; padding-left:1em'>
+						<a href="#sites_page" data-role="button" data-icon="bars" data-iconpos="notext" title="select">Select</a>
+					</td>
+				</tr>
+				</tbody>
+			</table>
+		</div>
+		
+		<div data-role="fieldcontain">
+			<label for="generate">&nbsp;</label>
+			<a href="#" id="generate" data-role="button" ng-click="generate()">Generate</a>
+		</div>
+		
+		<div data-role="fieldcontain">
+			<label for="result">Resulting password</label>
+			<input ng-model="result" type="text" name="result" id="result" style="font-family:monospace;"/>
+		</div>
+		
+		<div data-role="fieldcontain">
+			<label for="fakeinput1">&nbsp;</label>
+			<div data-role="collapsible" id="fakeinput1" data-collapsed-icon="gear">
+				<h3>Settings</h3>
+				<input ng-model="ignoreVhost" type="checkbox" name="ignoreTld" id="ignoreTld" checked="checked"/>
+				<label for="ignoreTld">Ignore TLD <span class="light">(www.expample<del>.org</del>)<span></label>
+				
+				<input ng-model="ignoreVhost" type="checkbox" name="ignoreVhost" id="ignoreVhost" checked="checked"/>
+				<label for="ignoreVhost">Ignore vhosts <span class="light">(<del>www.</del>expample.org)<span></label>
+				
+				<div data-role="fieldcontain" >
+					<label for="length">Length</label>
+					<input ng-model="length" type="number" name="length" id="length"/>
+				</div>
+			</div>
+		</div>
+		
+		<!--
 		<a href="#game_page" data-transition="slide" data-role="button" ng-click="checkWin()">Continue</a>
 		<a href="#levelsets_page" data-transition="slide" data-role="button">Start game</a>
 		<a href="#about_page" data-transition="slide" data-role="button">About</a>
 		<a href="#settings_page" data-transition="slide" data-role="button">Settings</a>
 		<a class="desktop" href="../platforms/android/ant-build/BrokenBreaks-debug.apk" target="_blank" data-role="button">Download Android App</a>
+		-->
 	</div>
 	<div data-role="footer" data-position="fixed">
 		<p>Version: {{version}}</p>
 	</div>
 </div>
 
+<div id="sites_page" data-role="page">
+	<div data-role="header">
+		<a href="#" data-icon="arrow-l" data-rel="back" data-transition="slide" data-iconpos="notext">Back</a>
+		<h1>Saved Sites</h1>
+	</div>
+	<div data-role="content">
+		<ul  data-role="listview" data-split-icon="delete" data-split-theme="d" data-inset="true">
+			<li ng-repeat="site in siteList" class="ng-scope ui-li-has-alt ui-first-child ui-last-child">
+				<a href="#" data-rel="back" ng-click="loadSite(site)" class="ui-btn">
+					<h2>{{site}}</h2>
+				</a>
+				<a href="#" ng-click="deleteSite(site)" class="ui-btn ui-btn-icon-notext ui-icon-delete ui-btn-d" title="Delete"></a>
+			</li>
+		</ul>
+	</div>
+</div>
+
+<div id="why_page" data-role="page">
+	<div data-role="header">
+		<a href="#" data-icon="arrow-l" data-rel="back" data-transition="slide" data-iconpos="notext">Back</a>
+		<h1>About AnyHash</h1>
+	</div>
+	<div data-role="content">
+		<h1>Why should I use AnyHash?</h1>
+				
+				<div>
+					<h2>Problem</h2>
+					<p>
+						<a href="http://www.google.com/search?q=leaked+passwords&hl=en">As you might have noticed</a>, 
+						many web sites have recently been attacked and many passwords leaked. As soon as that
+						happened, many bad guys tried to use those passwords on other sites to gain access to user accounts. Though
+						we all know, that we should have a separate password for each account, it is hard to impossible to achieve this in
+						practice. Human brains have not evolved to remember randomly generated / meaningless strings.
+					</p>
+					<h2>Other solutions</h2>
+					<p>
+						Of course, there are existing technical solutions, like file or cloud based password stores. Those encrypt the passwords
+						you use with a master key. However, you always have to have the file with you, or, in case of cloud based systems, have
+						to trust another instance.
+					</p>
+					<h2>AnyHash goes a different way:</h2>
+					<p>
+						<ul>
+							<li>There is no need to save passwords in any way.</li>
+							<li>A password can always be generated from you master password and the site you need it for.</li>
+							<li>As a result, there is no password store, that could fall into the wrong hands or you have to carry with you.</li>
+							<li>The resulting passwords have a high strength, even if your master-password is weak.</li>
+							<li>It is easy and convenient; extensions for browsers and mobile apps may follow to further improve this point.</li>
+							<li>It runs in any browser, which supports JavaScript.</li>
+						</ul>
+					</p>
+					<h2 class="important">Security note</h2>
+					<p>
+						Please be aware of the remaining risk that you could loose your master password, 
+						due to malware running in your browser or on your operating system. 
+					</p>
+				</div>
+	</div>
+</div>
+
+<!--
+Object.keys(c).sort()
 <div id="game_page" data-role="page">
 	<div data-role="header">
 		<a href="#" data-icon="arrow-l" data-rel="back" data-transition="slide">Back</a>
@@ -145,8 +263,6 @@
 					class="completed-{{ isLevelCompleted(level) }} status-{{ getLevelStatus(level) }} ui-link ui-btn ui-shadow ui-corner-all ui-icon-{{ getLevelStatus(level) | statusIcon }} ui-btn-icon-right "
 					data-icon="{{ getLevelStatus(level) | statusIcon }}"
 					>{{level.title}}
-					<!--<div>{{level.title}}</div>
-					<div class="levelset-description" >{{level.description}}</div>-->
 				</a>
 			</li>
 		</ul>
@@ -193,7 +309,7 @@
 		<h2>Alpha and beta testers</h2>
 		<div>Thanks to all you wonderful people providing feedback and bug reports!</div>
 	</div>
-</div>
+</div>-->
 
 </body>
 </html>

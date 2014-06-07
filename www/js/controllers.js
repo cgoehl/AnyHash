@@ -19,7 +19,7 @@ angular.module('myApp.controllers', [])
 		
 		$scope.generate = function()
 		{
-			var token = $scope.getToken();
+			var token = $scope.getToken().toLowerCase();
 			var scryptText = $scope.scrypt($scope.masterPassword, token);
 			if (token && token.length) {
 				$scope.sites[token] = { length: $scope.length, ignoreTld: $scope.ignoreTld, ignoreVhost: $scope.ignoreVhost };
