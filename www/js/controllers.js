@@ -9,44 +9,59 @@ angular.module('myApp.controllers', [])
 		$scope.masterPassword = "";
 		$scope.site = "";
 		$scope.result = "";
-		$scope.ignoreTld = true;
-		$scope.ignoreVhost = true;
-		$scope.length = 20;
+		$scope.defaultSettings = { ignoreTld: true, ignoreVhost: true, length: 20, iteration: 0 };
+		$scope.settings = $scope.defaultSettings;
 		$scope.sites = {};
 		$scope.siteList = [];
 		
 		$scope.scrypt = scrypt_module_factory();
 		
-		$scope.generate = function()
+		$scope.generateClick = function()
 		{
-			var token = $scope.getToken().toLowerCase();
-			var scryptText = $scope.scrypt($scope.masterPassword, token);
+			var foundSettings = getSettings($scope.site, $scope.sites);
+			var effectiveSettings = foundSettings ? foundSettings : $scope.defaultSettings;
+			$scope.result = generate($scope.masterPassword, $scope.site, effectiveSettings);
+			var token = getToken($scope.site, effectiveSettings.ignoreTld, effectiveSettings.ignoreVhost)
 			if (token && token.length) {
-				$scope.sites[token] = { length: $scope.length, ignoreTld: $scope.ignoreTld, ignoreVhost: $scope.ignoreVhost };
-				$scope.save();
+				$scope.sites[token] = effectiveSettings;
 			}
-			$scope.result = scryptText.substring(0, $scope.length); 
+			$scope.save();
 		}
 		
-		$scope.getToken = function getToken() {
-			function applyIgnores(host, ignore_tld, ignore_vhost) {
-				var parts = host.split(".");
-				if (parts.length == 1)
-					return parts[0];
-				if (ignore_tld && ignore_vhost)
-					return parts[parts.length-2];
-				if (ignore_tld)
-					return parts.slice(0, parts.length - 1).join(".");
-				if (ignore_vhost)
-					return parts.slice(parts.length - 2, parts.length).join(".");
-				return host;
-			}
-			
-			var host = new Uri($scope.site).host();
-			return applyIgnores(host, $scope.ignoreTld, $scope.ignoreVhost);
+		function generate(password, url, settings) {
+			console.log("generate", arguments)
+			var salt = getToken(url, settings.ignoreTld, settings.ignoreVhost);
+			salt += settings.iteration && settings.iteration > 0 
+				? settings.iteration
+				: "";
+			var key = scrypt(password, salt); 
+			return key.substring(0, settings.length)
 		}
 		
-		$scope.scrypt = function scrypt(password, salt) {
+		function getSettings(url, sites) {
+			return sites[getToken(url, false, false)]
+				|| sites[getToken(url, true, false)]
+				|| sites[getToken(url, false, true)]
+				|| sites[getToken(url, true, true)]
+				|| null;
+		}
+		
+		function getToken(url, ignoreTld, ignoreVhost) {
+			var host = new Uri(url).host();
+			var parts = host.split(".");
+			if (parts.length == 1)
+				return parts[0];
+			if (ignoreTld && ignoreVhost)
+				return parts[parts.length-2];
+			if (ignoreTld)
+				return parts.slice(0, parts.length - 1).join(".");
+			if (ignoreVhost)
+				return parts.slice(parts.length - 2, parts.length).join(".");
+			return host;
+		}		
+		
+		function scrypt(password, salt) {
+			console.log("scrypt", password, salt);
 			var s = scrypt_module_factory();
 			var u8 = s.crypto_scrypt
 				(s.encode_utf8(password)
@@ -58,10 +73,12 @@ angular.module('myApp.controllers', [])
 		
 		$scope.loadSite = function(site) {
 			$scope.site = site;
-			var s = $scope.sites[site];
+			/*var s = $scope.sites[site];
 			$scope.length = s.length;
 			$scope.ignoreTld = s.ignoreTld;
 			$scope.ignoreVhost = s.ignoreVhost;
+			$scope.iteration = s.iteration;*/
+			$scope.settings = $scope.sites[site];
 			if ($scope.masterPassword && $scope.masterPassword.length) {
 				$scope.generate();
 			}

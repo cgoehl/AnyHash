@@ -1,3 +1,6 @@
 [submodule "www/js-scrypt"]
 	path = www/js-scrypt
 	url = https://github.com/tonyg/js-scrypt.git
+[submodule "phonegap-icon-splash-generator"]
+	path = phonegap-icon-splash-generator
+	url = https://github.com/tlvince/phonegap-icon-splash-generator.git

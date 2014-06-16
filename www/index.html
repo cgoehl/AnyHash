@@ -47,11 +47,10 @@
 	<div data-role="content">
 		<div data-role="fieldcontain">
 			<label for="password">Master password</label>
-			<input ng-model="masterPassword" type="password" name="password" id="password"/>
+			<input ng-model="masterPassword" type="password" id="password"/>
 		</div>
 		<div data-role="fieldcontain">
 			<label for="token">Site</label>
-			<!--<input ng-model="token" type="text" name="token" id="token"/>-->
 			<table id="token1" style="width: 78%;border-spacing: 0;">
 				<tbody>
 				<tr>
@@ -68,38 +67,36 @@
 		
 		<div data-role="fieldcontain">
 			<label for="generate">&nbsp;</label>
-			<a href="#" id="generate" data-role="button" ng-click="generate()">Generate</a>
+			<a href="#" id="generate" data-role="button" ng-click="generateClick()">Generate</a>
 		</div>
 		
 		<div data-role="fieldcontain">
 			<label for="result">Resulting password</label>
-			<input ng-model="result" type="text" name="result" id="result" style="font-family:monospace;"/>
+			<input ng-model="result" type="text" id="result" style="font-family:monospace;"/>
 		</div>
 		
 		<div data-role="fieldcontain">
 			<label for="fakeinput1">&nbsp;</label>
 			<div data-role="collapsible" id="fakeinput1" data-collapsed-icon="gear">
 				<h3>Settings</h3>
-				<input ng-model="ignoreVhost" type="checkbox" name="ignoreTld" id="ignoreTld" checked="checked"/>
+				<input ng-model="settings.ignoreVhost" type="checkbox" id="ignoreTld" checked="checked"/>
 				<label for="ignoreTld">Ignore TLD <span class="light">(www.expample<del>.org</del>)<span></label>
 				
-				<input ng-model="ignoreVhost" type="checkbox" name="ignoreVhost" id="ignoreVhost" checked="checked"/>
+				<input ng-model="settings.ignoreVhost" type="checkbox" id="ignoreVhost" checked="checked"/>
 				<label for="ignoreVhost">Ignore vhosts <span class="light">(<del>www.</del>expample.org)<span></label>
 				
 				<div data-role="fieldcontain" >
 					<label for="length">Length</label>
-					<input ng-model="length" type="number" name="length" id="length"/>
+					<input ng-model="settings.length" type="number" id="length"/>
+				</div>
+				
+				<div data-role="fieldcontain" >
+					<label for="length">Iteration</label>
+					<input ng-model="settings.iteration" type="number" id="iteration"/>
 				</div>
 			</div>
 		</div>
-		
-		<!--
-		<a href="#game_page" data-transition="slide" data-role="button" ng-click="checkWin()">Continue</a>
-		<a href="#levelsets_page" data-transition="slide" data-role="button">Start game</a>
-		<a href="#about_page" data-transition="slide" data-role="button">About</a>
-		<a href="#settings_page" data-transition="slide" data-role="button">Settings</a>
-		<a class="desktop" href="../platforms/android/ant-build/BrokenBreaks-debug.apk" target="_blank" data-role="button">Download Android App</a>
-		-->
+
 	</div>
 	<div data-role="footer" data-position="fixed">
 		<p>Version: {{version}}</p>
@@ -165,151 +162,6 @@
 				</div>
 	</div>
 </div>
-
-<!--
-Object.keys(c).sort()
-<div id="game_page" data-role="page">
-	<div data-role="header">
-		<a href="#" data-icon="arrow-l" data-rel="back" data-transition="slide">Back</a>
-		<h1 style="padding: 0.3em 0;">
-			<div>{{levelset.title}}</div>
-			<div>{{level.title}}</div>
-		</h1>
-		<a ng-click="newGame()" data-icon="recycle" class="ui-btn-right">Restart</a>
-	</div>
-	
-		<svg version="1.1" xmlns="http://www.w3.org/2000/svg" id="game_view" preserveAspectRatio="xMidYMid meet" id="game"
-			viewBox="{{ (minX - 1) * 5}} {{ (minY - 1) * 5}} {{ (maxX - minX + 2) * 5}} {{ (maxY - minY + 2) * 5}}" >
-			<g ng-repeat="edge in edges" ng-click="moveOnEdge(edge)">
-				<path fill="none" 
-				d="M{{edge.na.x | nodeSpacing}},{{edge.na.y | nodeSpacing}}L{{edge.nb.x | nodeSpacing}},{{edge.nb.y | nodeSpacing}}"
-				stroke-width="1"
-				class="edgeColor{{ edgeColor(edge) }}"></path>
-				<path fill="none" stroke="#ffffff" 
-				d="M{{edge.na.x | nodeSpacing}},{{edge.na.y | nodeSpacing}}L{{edge.nb.x | nodeSpacing}},{{edge.nb.y | nodeSpacing}}"
-				stroke-width="0.1" path stroke-dasharray="0.45,0.45"></path>
-			</g>
-			<g ng-repeat="node in nodes" 
-				transform="translate({{node.x | nodeSpacing}}, {{node.y | nodeSpacing}})" 
-				ng-click="moveToNode(node)"
-				class="node">
-				<circle r="1" />
-			</g>
-			
-			<g transform="translate({{endNodeNode.x | nodeSpacing}}, {{endNodeNode.y | nodeSpacing}})"
-				ng-click="moveToNode(endNodeNode)">
-				<g transform="translate(-0.7, -0.7) scale(0.003)">
-					<path fill="#000000" stroke-width="0.4" stroke-miterlimit="4" id="rect2391" d="m394.805786,223.095795l0,0zm0,0l-162.812485,-144.1875l-162.90625,144.25l0,206.125c0,5.323364 4.30162,9.59375 9.625,9.59375l101.812515,0l0,-90.375c0,-5.323425 4.270355,-9.625 9.59375,-9.625l83.656219,0c5.323364,0 9.59375,4.301636 9.59375,9.625l0,90.375l101.84375,0c5.323364,0 9.593781,-4.270325 9.59375,-9.59375l0,-206.1875zm-325.718735,0.0625l0,0z"/>
-					<path fill="#000000" stroke-width="0.4" stroke-miterlimit="4" id="path2399" d="m231.048508,0l-231.048504,204.583557l24.338306,27.457397l207.655388,-183.884186l207.608109,183.884186l24.291046,-27.457397l-231.001236,-204.583557l-0.897919,1.039703l-0.94519,-1.039703z"/>
-					<path fill="#000000" stroke-width="0.4" stroke-miterlimit="4" id="rect2404" d="m69.087051,29.449036l58.571434,0l-0.510376,34.691101l-58.061058,52.451752l0,-87.142853z"/>
-				</g>
-			</g>
-			
-			<g transform="translate({{player.x | nodeSpacing}}, {{player.y | nodeSpacing}})">
-				<path transform="scale(0.01) translate(-63, -70)" fill="#000000" stroke="#ffffff" d="m35.982552,16.580818c-7.607826,-0.000008 -11.647247,4.171665 -13.510384,9.033323l-9.865349,25.515215c-3.920677,0.502739 -10.895496,5.10915 -10.895477,13.827339l0,32.488312l9.627632,0l0,10.380417c-0.000031,12.777519 18.1063,12.627022 18.1063,0l0,-10.380417l32.527916,0l32.527939,0l0,10.380417c-0.000031,12.627022 18.066666,12.777519 18.066666,0l0,-10.380417l9.627625,0l0,-32.488312c-0.000031,-8.718189 -6.935181,-13.3246 -10.85585,-13.827339l-9.904968,-25.515215c-1.863159,-4.861658 -5.902557,-9.033331 -13.510376,-9.033323l-13.985825,0l-23.811554,0l-14.144295,0zm-0.079239,9.310663l26.030266,0l0.039612,0l26.069901,0c3.26033,0.030365 4.654816,2.089813 5.586395,4.91287l7.448547,20.08728l-39.104843,0l-0.039612,0l-39.104836,0l7.44854,-20.08728c0.931572,-2.823057 2.365356,-4.882505 5.62603,-4.91287zm-15.214043,34.746649c4.61335,0 8.359802,3.882431 8.359802,8.637138c0,4.755043 -3.746468,8.597519 -8.359802,8.597519c-4.612968,0 -8.359802,-3.842476 -8.359802,-8.597519c0.000015,-4.754707 3.746819,-8.637138 8.359802,-8.637138zm82.567856,0c4.613312,0 8.359818,3.882431 8.359787,8.637138c0,4.755043 -3.74646,8.597519 -8.359787,8.597519c-4.613007,0 -8.359802,-3.842476 -8.359802,-8.597519c-0.000015,-4.754707 3.746796,-8.637138 8.359802,-8.637138z" id="path2301"/>
-			</g>
-		</svg>
-		
-	<div data-role="footer" data-position="fixed" data-tap-toggle="false">
-			<h1>{{moveCount}} Move{{moveCount | plural}}</h1>
-			<a ng-click="undoMove()" data-icon="recycle" class="ui-btn-right">Undo</a>
-	</div>
-</div>
-
-<div id="game_won_page" data-role="dialog" data-close-btn="none">
-	<div data-role="header">
-		<h1>You did it!</h1>
-	</div>
-	<div data-role="content" style="visibility: {{ moveCount == 0 ? 'hidden' : 'visible' }}">
-		<h1>{{ getLevelStatus(level) == 2 ? "Perfect!" : "Congratulations" }}</h1>
-		<div>Moves: {{moveCount}} / {{level.moves}}</div>
-	</div>
-	<div data-role="footer">
-		<a href="#game_page" data-rel="back" data-theme="c" ng-click="newGame()" data-icon="recycle" data-role="button">Restart</a>
-		<a href="#game_page" data-rel="back" data-theme="a" ng-click="nextLevel()" data-icon="carat-r" data-role="button">Next level</a>
-	</div>
-</div>
-
-<div id="levelsets_page" data-role="page">
-	<div data-role="header">
-		<a href="#" data-icon="arrow-l" data-rel="back" data-transition="slide">Back</a>
-		<h1>Levels</h1>
-	</div>
-	<div data-role="content">
-		<ul data-role="listview">
-			<li ng-repeat="set in sets">
-				<a href="#levels_page" data-transition="slide" ng-click="setLevelSetIndex($index)">
-					<div>{{set.title}}</div>
-					<div class="levelset-description" >{{set.description}}</div>
-				</a>
-			</li>
-		</ul>
-	</div>
-</div>
-
-<div id="levels_page" data-role="page">
-	<div data-role="header">
-		<a href="#" data-icon="arrow-l" data-rel="back" data-transition="slide">Back</a>
-		<h1>{{levelset.title}}</h1>
-	</div>
-	<div data-role="content">
-		<ul>
-			<li ng-repeat="level in levelset.levels" style="display:inline-block;">
-				<a href="#game_page" 
-					data-transition="slide" 
-					ng-click="setLevelIndex($index)" 
-					data-role="button"
-					style="margin: 0.2em 0.2em 0"
-					class="completed-{{ isLevelCompleted(level) }} status-{{ getLevelStatus(level) }} ui-link ui-btn ui-shadow ui-corner-all ui-icon-{{ getLevelStatus(level) | statusIcon }} ui-btn-icon-right "
-					data-icon="{{ getLevelStatus(level) | statusIcon }}"
-					>{{level.title}}
-				</a>
-			</li>
-		</ul>
-	</div>
-	<div data-role="footer" data-position="fixed" data-tap-toggle="false">
-		<a ng-click="setLevelSetIndex(levelsetIndex - 1)" data-icon="arrow-l" class="ui-btn-left">Previous</a>
-		<h1>Set</h1>
-		<a ng-click="setLevelSetIndex(levelsetIndex + 1)" data-icon="arrow-r" class="ui-btn-right">Next</a>
-	</div>
-</div>
-
-<div id="settings_page" data-role="page">
-	<div data-role="header">
-		<a href="#" data-icon="arrow-l" data-rel="back" data-transition="slide">Back</a>
-		<h1>Settings</h1>
-	</div>
-	<div data-role="content">
-		<a href="#reset_progress_dialog" data-role="button" data-transition="dialog" >Reset all progress</a>
-	</div>
-</div>
-
-<div id="reset_progress_dialog" data-role="dialog">
-	<div data-role="header">
-		<h1>Delete all stored data?</h1>
-	</div>
-	<div data-role="content">
-		<div>All game progress will be reset. Are you sure?</div>
-	</div>
-	<div data-role="footer">
-		<a href="#game_page" data-rel="back" ng-click="reset()" data-icon="check" data-role="button">Confirm</a>
-		<a href="#game_page" data-rel="back" data-icon="delete" data-role="button">Cancel</a>
-	</div>
-</div>
-
-<div id="about_page" data-role="page" data-transition="slide">
-	<div data-role="header">
-		<a href="#" data-icon="arrow-l" data-rel="back">Back</a>
-		<h1>About</h1>
-	</div>
-	<div data-role="content">
-		<h1>{{appName}} {{version}}</h1>
-		<h2>Level generator</h2>
-		<a target="_blank" href="http://zulko.github.io/blog/2014/04/27/viennese-mazes-what-they-are/">Thanks to zulko for the level generator!</a>
-		<h2>Alpha and beta testers</h2>
-		<div>Thanks to all you wonderful people providing feedback and bug reports!</div>
-	</div>
-</div>-->
 
 </body>
 </html>
