@@ -8,6 +8,7 @@ tmp
 __pycache__
 www/components/
 www/resource/levels/
+www/res/
 plugins/
 platforms/
 

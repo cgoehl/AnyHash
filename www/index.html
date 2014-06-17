@@ -36,7 +36,7 @@
 <body ng-controller="AnyHashCtrl">
 
 <!--Weclome Page-->
-<div id="welcome_page" data-role="page">
+<div id="welcome_page" data-role="page" ng-keyup="$event.keyCode == 13 ? generateClick() : null">
 	<div data-role="header">
 		<h1>AnyHash</h1>
 		<a href="#why_page" data-icon="info" data-transition="slide" data-iconpos="notext" title="Info">Info</a>

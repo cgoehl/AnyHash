@@ -12,6 +12,7 @@
     "underscore": "latest",
     "angular-local-storage": "latest",
     "fastclick": "1.0.2",
-    "jsuri": "1.3.0-beta.1"
+    "jsuri": "1.3.0-beta.1",
+    "ui-utils": "latest"
   }
 }
