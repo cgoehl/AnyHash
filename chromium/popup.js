@@ -2,7 +2,14 @@
 function init() {
 	chrome.runtime.sendMessage({ method: "status" }, function(response) {
 		$("body").addClass(response.state);
+		setBadge(response.state);
 	});
+}
+
+function setBadge(status) {
+	var color = status === 'locked' ? '#DD0000' : '#00DD00';
+	chrome.browserAction.setBadgeBackgroundColor({color: color});
+	chrome.browserAction.setBadgeText({text: '\xa0'});
 }
 
 $(function() {
@@ -11,10 +18,12 @@ $(function() {
 		console.log(arguments);
 		event.preventDefault();
 		var password = document.getElementById("masterpassword").value;
+		if(!password.length) return;
 		chrome.runtime.sendMessage({
 			method: "setPassword",
 			password: password
 		}, function(response) {
+			setBadge('unlocked');
 			window.close();
 		});
 		return false;
@@ -23,6 +32,7 @@ $(function() {
 		chrome.runtime.sendMessage({
 			method: "lock"
 		}, function(response) {
+			setBadge('locked');
 			window.close();
 		});
 	})
