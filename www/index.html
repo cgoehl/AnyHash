@@ -4,34 +4,27 @@
   <meta charset="utf-8">
   <meta name="viewport"  content="width=device-width, height=device-height, initial-scale=1, user-scalable=1" />
   <title>AnyHash</title>
-  
+
   <link rel="shortcut icon" href="res/icon/icon.png">
-  <link rel="stylesheet" href="components/jquery-mobile-bower/css/jquery.mobile-1.4.2.css"/>
+  <link rel="stylesheet" href="components/jquery-mobile-bower/css/jquery.mobile-1.4.5.css"/>
   <link rel="stylesheet" href="css/app.css"/>
-  
+
   <script src="components/jquery/jquery.js"></script>
-  <script src="components/jquery-mobile-bower/js/jquery.mobile-1.4.2.js"></script>
+  <script src="components/jquery-mobile-bower/js/jquery.mobile-1.4.5.js"></script>
   <script src="components/angular/angular.js"></script>
-  
-  <script src="components/angular-local-storage/angular-local-storage.js"></script>
+
+  <script src="components/angular-local-storage/dist/angular-local-storage.js"></script>
   <script src="components/underscore/underscore.js"></script>
   <script src="components/fastclick/lib/fastclick.js"></script>
   <script src="components/jsuri/Uri.js"></script>
-  
+
   <script src="js-scrypt/browser/scrypt.js"></script>
-  
+
   <script src="js/app.js"></script>
   <script src="js/services.js"></script>
   <script src="js/controllers.js"></script>
   <script src="js/filters.js"></script>
   <script src="js/directives.js"></script>
-  <script>
-		/*$(function(){
-			$('#result').click(function(){
-				$(this).select();
-			});
-		});*/
-  </script>
 </head>
 <body ng-controller="AnyHashCtrl">
 
@@ -40,8 +33,8 @@
 	<div data-role="header">
 		<h1>AnyHash</h1>
 		<a href="#why_page" data-icon="info" data-transition="slide" data-iconpos="notext" title="Info">Info</a>
-		<a class="desktop" href="../platforms/android/ant-build/AnyHash-debug.apk" 
-			target="_blank" data-role="button"  data-iconpos="notext" data-icon="arrow-d" class="ui-btn-right" 
+		<a class="desktop" href="../platforms/android/ant-build/AnyHash-debug.apk"
+			target="_blank" data-role="button"  data-iconpos="notext" data-icon="arrow-d" class="ui-btn-right"
 			title="Download Android App">Download Android App</a>
 	</div>
 	<div data-role="content">
@@ -64,32 +57,32 @@
 				</tbody>
 			</table>
 		</div>
-		
+
 		<div data-role="fieldcontain">
 			<label for="generate">&nbsp;</label>
 			<a href="#" id="generate" data-role="button" ng-click="generateClick()">Generate</a>
 		</div>
-		
+
 		<div data-role="fieldcontain">
 			<label for="result">Resulting password</label>
 			<input ng-model="result" type="text" id="result" style="font-family:monospace;"/>
 		</div>
-		
+
 		<div data-role="fieldcontain">
 			<label for="fakeinput1">&nbsp;</label>
 			<div data-role="collapsible" id="fakeinput1" data-collapsed-icon="gear">
 				<h3>Settings</h3>
 				<input ng-model="settings.ignoreVhost" type="checkbox" id="ignoreTld" checked="checked"/>
 				<label for="ignoreTld">Ignore TLD <span class="light">(www.expample<del>.org</del>)<span></label>
-				
+
 				<input ng-model="settings.ignoreVhost" type="checkbox" id="ignoreVhost" checked="checked"/>
 				<label for="ignoreVhost">Ignore vhosts <span class="light">(<del>www.</del>expample.org)<span></label>
-				
+
 				<div data-role="fieldcontain" >
 					<label for="length">Length</label>
 					<input ng-model="settings.length" type="number" id="length"/>
 				</div>
-				
+
 				<div data-role="fieldcontain" >
 					<label for="length">Iteration</label>
 					<input ng-model="settings.iteration" type="number" id="iteration"/>
@@ -129,11 +122,11 @@
 	</div>
 	<div data-role="content">
 		<h1>Why should I use AnyHash?</h1>
-				
+
 				<div>
 					<h2>Problem</h2>
 					<p>
-						<a href="http://www.google.com/search?q=leaked+passwords&hl=en">As you might have noticed</a>, 
+						<a href="http://www.google.com/search?q=leaked+passwords&hl=en">As you might have noticed</a>,
 						many web sites have recently been attacked and many passwords leaked. As soon as that
 						happened, many bad guys tried to use those passwords on other sites to gain access to user accounts. Though
 						we all know, that we should have a separate password for each account, it is hard to impossible to achieve this in
@@ -158,8 +151,8 @@
 					</p>
 					<h2 class="important">Security note</h2>
 					<p>
-						Please be aware of the remaining risk that you could loose your master password, 
-						due to malware running in your browser or on your operating system. 
+						Please be aware of the remaining risk that you could loose your master password,
+						due to malware running in your browser or on your operating system.
 					</p>
 				</div>
 	</div>
