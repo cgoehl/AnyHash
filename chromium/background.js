@@ -1,45 +1,27 @@
-function getPassword(cb) {
-	return chrome.storage.local.get('password', function(result) {
-		cb(result.password);
-	});
-}
-
-function setPassword(value) {
-	chrome.storage.local.set({password: value}, console.log.bind(console));
-}
-
-function resetPassword() {
-	return chrome.storage.local.remove('password');
-}
-
-function handleMessage(message) {
-
-}
+var masterPassword = null;
 
 chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
 	console.log(message);
 	switch(message.method) {
 		case 'getPassword': {
-			getPassword(function (masterPassword) {
-				if (!masterPassword) {
-					sendResponse({ status: false, error: 'locked' });
-				}
-				var defaultSettings = {
-					ignoreTld: true,
-					ignoreVhost: true,
-					length: 20,
-					iteration: 0
-				};
+			if (!masterPassword) {
+				sendResponse({ status: false, error: 'locked' });
+			}
+			var defaultSettings = {
+				ignoreTld: true,
+				ignoreVhost: true,
+				length: 20,
+				iteration: 0
+			};
 
-				var settings = Object.assign({}, defaultSettings, {})
-				var password = generate(message.url, masterPassword, settings)
-				sendResponse({ status: true, url: message.url, password: password });
-			});
-			return true;
+			var settings = Object.assign({}, defaultSettings, {})
+			var password = generate(message.url, masterPassword, settings)
+			sendResponse({ status: true, url: message.url, password: password });
+			return false;
 		}
 		case 'setPassword': {
 			if(message.password) {
-				setPassword(message.password);
+				masterPassword = message.password;
 				sendResponse({ status: true, state: 'unlocked' });
 			}
 			else {
@@ -48,20 +30,18 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
 			return false;
 		}
 		case 'lock': {
-			resetPassword();
+			masterPassword = null;
 			sendResponse({ status: true, state: 'locked' });
 			return false;
 		}
 		case 'status': {
-			getPassword(function (masterPassword) {
-				var state = masterPassword ? 'unlocked' : 'locked';
-				sendResponse({ status: true, state: state });
-			});
-			return true;
+			var state = masterPassword ? 'unlocked' : 'locked';
+			sendResponse({ status: true, state: state });
+			return false;
 		}
 		default: {
 			sendResponse({ status: false, error: 'invalid message' });
-			break;
+			return false;
 		}
 	}
 });
