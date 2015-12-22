@@ -1,5 +1,12 @@
 
+function init() {
+	chrome.runtime.sendMessage({ method: "status" }, function(response) {
+		$("body").addClass(response.state);
+	});
+}
+
 $(function() {
+	init();
 	$("#passwordForm").submit(function(event) {
 		console.log(arguments);
 		event.preventDefault();
@@ -8,9 +15,21 @@ $(function() {
 			method: "setPassword",
 			password: password
 		}, function(response) {
-			console.log(response);
+			window.close();
 		});
 		return false;
 	});
+	$("#lockButton").click(function() {
+		chrome.runtime.sendMessage({
+			method: "lock"
+		}, function(response) {
+			window.close();
+		});
+	})
 
+
+	chrome.tabs.query({ active: true, currentWindow: true}, function (tabs){
+		var currentTab = tabs[0];
+		console.log(currentTab);
+	});
 })

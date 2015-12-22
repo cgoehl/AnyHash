@@ -3,12 +3,26 @@
 <head>
 	<script src="../www/components/jquery/jquery.js"></script>
 	<script src="popup.js"></script>
+	<style>
+.locked .passwordform { display: block; }
+.unlocked .passwordform { display: none; }
+
+.locked .lockbutton { display: none; }
+.unlocked .lockbutton { display: block; }
+
+body {
+	font-size: larger;
+	padding: 10px;
+}
+	</style>
 </head>
 <body>
-	<form action="#" id="passwordForm">
-		<label for="masterpassword">Master password</label>
+	<form action="#" id="passwordForm" class="passwordform">
+		<label for="masterpassword">Enter password</label>
 		<input type="password" id="masterpassword" />
-		<input type="submit" value="Send"/>
+		<input type="submit" value="Unlock"/>
 	</form>
+	<input type="button" value="Lock" id="lockButton" class="lockbutton"/>
+	<hr />
 </body>
 </html>

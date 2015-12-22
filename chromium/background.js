@@ -1,7 +1,10 @@
 var masterPassword = null;
 
-chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
-	console.log(message);
+chrome.runtime.onMessage.addListener(function(message, sender, sendResponseRaw) {
+	var sendResponse = function(res) {
+		console.log(message, '->', res);
+		sendResponseRaw(res);
+	}
 	switch(message.method) {
 		case 'getPassword': {
 			if (!masterPassword) {
