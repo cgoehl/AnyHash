@@ -4,11 +4,10 @@
 	<script src="../www/components/jquery/jquery.js"></script>
 	<script src="popup.js"></script>
 	<style>
-.locked .passwordform { display: block; }
-.unlocked .passwordform { display: none; }
 
-.locked .lockbutton { display: none; }
-.unlocked .lockbutton { display: block; }
+.unlocked .hideunlocked { display: none; }
+.locked .hidelocked { display: none; }
+.monospace { font-family: monospace; }
 
 body {
 	font-size: larger;
@@ -17,12 +16,17 @@ body {
 	</style>
 </head>
 <body>
-	<form action="#" id="passwordForm" class="passwordform">
+	<form action="#" id="passwordForm" class="hideunlocked">
 		<label for="masterpassword">Enter password</label>
 		<input type="password" id="masterpassword" />
 		<input type="submit" value="Unlock"/>
 	</form>
-	<input type="button" value="Lock" id="lockButton" class="lockbutton"/>
-	<hr />
+	<div class="hidelocked">
+		<p>
+			Fingerprint: <span class="monospace" id="fingerprint"></span>
+		</p>
+		<hr />
+		<input type="button" value="Lock" id="lockButton" />
+	</div>
 </body>
 </html>

@@ -1,4 +1,5 @@
 var masterPassword = null;
+var currentFingerprint = null;
 
 chrome.runtime.onMessage.addListener(function(message, sender, sendResponseRaw) {
 	var sendResponse = function(res) {
@@ -25,7 +26,8 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponseRaw) 
 		case 'setPassword': {
 			if(message.password) {
 				masterPassword = message.password;
-				sendResponse({ status: true, state: 'unlocked' });
+				currentFingerprint = fingerprint(masterPassword);
+				sendResponse({ status: true, state: 'unlocked', fingerprint: currentFingerprint });
 			}
 			else {
 				sendResponse({ status: false, error: 'no password given' });
@@ -39,7 +41,7 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponseRaw) 
 		}
 		case 'status': {
 			var state = masterPassword ? 'unlocked' : 'locked';
-			sendResponse({ status: true, state: state });
+			sendResponse({ status: true, state: state, fingerprint: currentFingerprint });
 			return false;
 		}
 		default: {

@@ -3,6 +3,7 @@ function init() {
 	chrome.runtime.sendMessage({ method: "status" }, function(response) {
 		$("body").addClass(response.state);
 		setBadge(response.state);
+		setFingerprint(response.fingerprint);
 	});
 }
 
@@ -10,6 +11,10 @@ function setBadge(status) {
 	var color = status === 'locked' ? '#DD0000' : '#00DD00';
 	chrome.browserAction.setBadgeBackgroundColor({color: color});
 	chrome.browserAction.setBadgeText({text: '\xa0'});
+}
+
+function setFingerprint(fingerprint) {
+	$("#fingerprint").text(fingerprint);
 }
 
 $(function() {
@@ -24,6 +29,7 @@ $(function() {
 			password: password
 		}, function(response) {
 			setBadge('unlocked');
+			setFingerprint(response.fingerprint);
 			window.close();
 		});
 		return false;
@@ -33,6 +39,7 @@ $(function() {
 			method: "lock"
 		}, function(response) {
 			setBadge('locked');
+			setFingerprint('');
 			window.close();
 		});
 	})
