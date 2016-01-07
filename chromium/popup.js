@@ -1,21 +1,25 @@
 
-function init() {
-	chrome.runtime.sendMessage({ method: "status" }, function(response) {
-		$("body").addClass(response.state);
-		setBadge(response.state);
-		setFingerprint(response.fingerprint);
-	});
-}
-
-function setBadge(status) {
-	var color = status === 'locked' ? '#DD0000' : '#00DD00';
-	chrome.browserAction.setBadgeBackgroundColor({color: color});
-	chrome.browserAction.setBadgeText({text: '\xa0'});
-}
-
 function setFingerprint(fingerprint) {
 	$("#fingerprint").text(fingerprint);
 }
+
+function setFingerprintImage(url) {
+	$("#fingerprintImage").attr('src', url);
+}
+
+function init() {
+	chrome.runtime.sendMessage({ method: "status" }, update);
+}
+
+function update(response) {
+	console.log(response);
+	$("body").addClass(response.state);
+	if (response.state === 'locked') return;
+	setFingerprint(response.fingerprint);
+	setFingerprintImage(response.fingerprintImage);
+}
+
+
 
 $(function() {
 	init();
@@ -28,8 +32,7 @@ $(function() {
 			method: "setPassword",
 			password: password
 		}, function(response) {
-			setBadge('unlocked');
-			setFingerprint(response.fingerprint);
+			update(response);
 			window.close();
 		});
 		return false;
@@ -38,8 +41,7 @@ $(function() {
 		chrome.runtime.sendMessage({
 			method: "lock"
 		}, function(response) {
-			setBadge('locked');
-			setFingerprint('');
+			update(response);
 			window.close();
 		});
 	})

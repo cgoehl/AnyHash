@@ -1,6 +1,39 @@
 var masterPassword = null;
 var currentFingerprint = null;
 
+var defaultState = {
+	masterpassword: null,
+	fingerprint: null,
+	largeFingerprintImage: null,
+	displayFingerprint: null,
+};
+
+var state = Object.assign({}, defaultState);
+
+function setPassword(password) {
+	state.masterPassword = password;
+	state.fingerprint = generateFingerprint(password);
+	state.displayFingerprint = btoa(String.fromCharCode.apply(null, state.fingerprint)).substr(0, 20);
+	state.largeFingerprintImage = generateFingerprintImage(state.fingerprint, 7).url;
+	var icon = generateFingerprintImage(state.fingerprint, 1);
+	chrome.browserAction.setIcon({ imageData: icon.imageData });
+}
+
+function resetPassword() {
+	state = Object.assign({}, defaultState);
+	chrome.browserAction.setIcon({ path: {19: 'chromium/icon19.png', 38: 'chromium/icon38.png' }});
+}
+
+function status(v, more) {
+	var r = {
+		status: v,
+		state: state.masterPassword ? 'unlocked' : 'locked',
+		fingerprint: state.displayFingerprint,
+		fingerprintImage: state.largeFingerprintImage
+	};
+	return Object.assign(r, more);
+}
+
 chrome.runtime.onMessage.addListener(function(message, sender, sendResponseRaw) {
 	var sendResponse = function(res) {
 		console.log(message, '->', res);
@@ -8,8 +41,9 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponseRaw) 
 	}
 	switch(message.method) {
 		case 'getPassword': {
-			if (!masterPassword) {
+			if (!state.masterPassword) {
 				sendResponse({ status: false, error: 'locked' });
+				return false;
 			}
 			var defaultSettings = {
 				ignoreTld: true,
@@ -19,29 +53,28 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponseRaw) 
 			};
 
 			var settings = Object.assign({}, defaultSettings, {})
-			var password = generate(message.url, masterPassword, settings)
+			var password = generate(message.url, state.masterPassword, settings)
 			sendResponse({ status: true, url: message.url, password: password });
 			return false;
 		}
 		case 'setPassword': {
-			if(message.password) {
-				masterPassword = message.password;
-				currentFingerprint = fingerprint(masterPassword);
-				sendResponse({ status: true, state: 'unlocked', fingerprint: currentFingerprint });
+			var password = message.password;
+			if(password) {
+				setPassword(password)
+				sendResponse(status(true));
 			}
 			else {
-				sendResponse({ status: false, error: 'no password given' });
+				sendResponse(status(false, { error: 'no password given' }));
 			}
 			return false;
 		}
 		case 'lock': {
-			masterPassword = null;
-			sendResponse({ status: true, state: 'locked' });
+			resetPassword();
+			sendResponse(status(true));
 			return false;
 		}
 		case 'status': {
-			var state = masterPassword ? 'unlocked' : 'locked';
-			sendResponse({ status: true, state: state, fingerprint: currentFingerprint });
+			sendResponse(status(true));
 			return false;
 		}
 		default: {

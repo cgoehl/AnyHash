@@ -8,6 +8,7 @@
 .unlocked .hideunlocked { display: none; }
 .locked .hidelocked { display: none; }
 .monospace { font-family: monospace; }
+#fingerprintImage { width: 100%; margin-top: 3px; }
 
 body {
 	font-size: larger;
@@ -16,15 +17,21 @@ body {
 	</style>
 </head>
 <body>
+	<div>
+		<strong>State: </strong>
+		<span class="hidelocked">locked</span>
+		<span class="hideunlocked">unlocked</span>
+	</div>
+	<hr />
 	<form action="#" id="passwordForm" class="hideunlocked">
 		<label for="masterpassword">Enter password</label>
 		<input type="password" id="masterpassword" />
 		<input type="submit" value="Unlock"/>
 	</form>
 	<div class="hidelocked">
-		<p>
-			Fingerprint: <span class="monospace" id="fingerprint"></span>
-		</p>
+		<strong>Fingerprint:</strong>
+		<span class="monospace" id="fingerprint"></span>
+		<img width="133" height"133" src="" id="fingerprintImage"/>
 		<hr />
 		<input type="button" value="Lock" id="lockButton" />
 	</div>
