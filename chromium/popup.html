@@ -8,6 +8,7 @@
 .unlocked .hideunlocked { display: none; }
 .locked .hidelocked { display: none; }
 .monospace { font-family: monospace; }
+.clearfix { clear: both; }
 #fingerprintImage { width: 100%; margin-top: 3px; }
 
 body {
@@ -29,6 +30,17 @@ body {
 		<input type="submit" value="Unlock"/>
 	</form>
 	<div class="hidelocked">
+		<strong>Manual mode</strong>
+		<form id="manualForm">
+			<label for="manualToken">Token</label>
+			<input type="text" id="manualToken" autocomplete="off"/>
+			<input type="submit" value="Generate" />
+		</form>
+
+		<label for="manualResult">Result</label>
+		<input type="text" id="manualResult" />
+		<button id="manualCopy" title="Copy">Copy</button>
+		<hr />
 		<strong>Fingerprint:</strong>
 		<span class="monospace" id="fingerprint"></span>
 		<img width="133" height"133" src="" id="fingerprintImage"/>

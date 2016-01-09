@@ -24,9 +24,8 @@ function update(response) {
 $(function() {
 	init();
 	$("#passwordForm").submit(function(event) {
-		console.log(arguments);
 		event.preventDefault();
-		var password = document.getElementById("masterpassword").value;
+		var password = $("#masterpassword").val();
 		if(!password.length) return;
 		chrome.runtime.sendMessage({
 			method: "setPassword",
@@ -36,6 +35,27 @@ $(function() {
 			window.close();
 		});
 		return false;
+	});
+	$("#manualForm").submit(function(event) {
+		event.preventDefault();
+		var token = $("#manualToken").val();
+		chrome.runtime.sendMessage({
+				method: "getPassword",
+				url: token
+			}, function(response) {
+				console.log("getPassword", response.status);
+				if (response.status) {
+					$("#manualResult").val(response.password);
+					$("#manualResult").select();
+				}
+			}
+		);
+		return false;
+	});
+	$("#manualCopy").click(function() {
+		$("#manualResult").select();
+		document.execCommand("Copy", false, null);
+		window.close();
 	});
 	$("#lockButton").click(function() {
 		chrome.runtime.sendMessage({

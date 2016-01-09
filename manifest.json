@@ -3,11 +3,11 @@
 
   "name": "AnyHash",
   "description": "Storageless password manager.",
-  "version": "0.0.0.1",
+  "version": "0.0.0.2",
   "icons": {
     "16": "chromium/icon16.png",
     "48": "chromium/icon48.png",
-    "128": "chromium/icon128.png" 
+    "128": "chromium/icon128.png"
   },
   "browser_action": {
     "default_icon": {
@@ -19,6 +19,7 @@
   "permissions": [
     "tabs",
     "storage",
+    "clipboardWrite",
     "http://*/*",
     "https://*/*"
   ],
@@ -33,7 +34,6 @@
     }
   ],
   "background": {
-
     "scripts": [
       "www/components/underscore/underscore.js",
       "www/components/jsuri/Uri.js",
