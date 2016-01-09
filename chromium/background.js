@@ -53,7 +53,7 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponseRaw) 
 			};
 
 			var settings = Object.assign({}, defaultSettings, {})
-			var password = generate(message.url, state.masterPassword, settings)
+			var password = generate(state.masterPassword, message.url, settings)
 			sendResponse({ status: true, url: message.url, password: password });
 			return false;
 		}
