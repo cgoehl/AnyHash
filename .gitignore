@@ -6,11 +6,6 @@ tmp
 .idea
 .apk
 __pycache__
-www/components/
-www/resource/levels/
 www/res/
 plugins/
 platforms/
-
-level_generator/levels/
-
