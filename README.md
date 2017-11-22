@@ -12,6 +12,6 @@ AnyHash is a password "storage" solution. However:
 
 It uses a JavaScript version of the famous scrypt algorithm to create passwords.
 Currently the application can be hosted on web servers or be used as a mobile app. 
-Find a running instance and an apk download link on [my server](http://zulu824.server4you.de/ah).
+Find a running instance and an apk download link at [https://cgoehl.github.io/AnyHash/](https://cgoehl.github.io/AnyHash/).
 
 License: BSD-2

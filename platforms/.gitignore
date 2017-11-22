@@ -1,0 +1,8 @@
+*
+!.gitignore
+
+!android/
+android/*
+!android/ant-build/
+android/ant-build/*
+!android/ant-build/AnyHash-debug.apk
