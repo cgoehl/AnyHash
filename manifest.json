@@ -3,7 +3,7 @@
 
   "name": "AnyHash",
   "description": "Storageless password manager.",
-  "version": "0.0.0.2",
+  "version": "0.0.0.3",
   "icons": {
     "16": "chromium/icon16.png",
     "48": "chromium/icon48.png",
