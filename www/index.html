@@ -13,7 +13,7 @@
   <script src="components/jquery-mobile-bower/js/jquery.mobile-1.4.2.js"></script>
   <script src="components/angular/angular.js"></script>
 
-  <script src="components/angular-local-storage/dist/angular-local-storage.js"></script>
+  <script src="components/angular-local-storage/angular-local-storage.js"></script>
   <script src="components/underscore/underscore.js"></script>
   <script src="components/fastclick/lib/fastclick.js"></script>
   <script src="components/jsuri/Uri.js"></script>
@@ -73,13 +73,10 @@
 			<label for="fakeinput1">&nbsp;</label>
 			<div data-role="collapsible" id="fakeinput1" data-collapsed-icon="gear">
 				<h3>Settings</h3>
+				
 				<input ng-model="settings.ignoreVhost" type="checkbox" id="ignoreTld" checked="checked"/>
 				<label for="ignoreTld">Ignore TLD <span class="light">(www.expample<del>.org</del>)<span></label>
-<<<<<<< Updated upstream
-
-=======
-				
->>>>>>> Stashed changes
+					
 				<input ng-model="settings.ignoreVhost" type="checkbox" id="ignoreVhost" checked="checked"/>
 				<label for="ignoreVhost">Ignore vhosts <span class="light">(<del>www.</del>expample.org)<span></label>
 
@@ -87,11 +84,7 @@
 					<label for="length">Length</label>
 					<input ng-model="settings.length" type="number" id="length"/>
 				</div>
-<<<<<<< Updated upstream
-
-=======
 				
->>>>>>> Stashed changes
 				<div data-role="fieldcontain" >
 					<label for="length">Iteration</label>
 					<input ng-model="settings.iteration" type="number" id="iteration"/>
